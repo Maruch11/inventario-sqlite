@@ -1,0 +1,13 @@
+__pycache__
+*.pyc
+
+# Entorno local
+.venv/
+venv/
+.env
+
+# Base de datos local
+inventario.db
+inventario.db-journal
+inventario.db-wal
+inventario.db-shm
