@@ -47,6 +47,7 @@ def select_all():
     cursor.execute("SELECT * FROM productos") 
     filas = cursor.fetchall()
     return filas
+
 # obtener_producto por ID
 '''
 Funcion que devuelve todos los campos de la tabla productos consultando por campo ID
@@ -92,7 +93,45 @@ def select_price_by_like_nombre(nombre):
     filas = cursor.fetchone()
     return filas
 
-# actualizar_ producto por ID
+# registrar_producto
+'''
+Funcion que recibe un diccionario,
+ejecuta un INSERT,
+hace commit(),
+devuelve cursor.rowcount.
+'''
+def registrar_producto(producto):
+    cursor.execute('''
+        INSERT INTO productos (nombre, descripcion, cantidad, precio, categoria)
+        VALUES (?, ?, ?, ?, ?)
+''', (
+    producto["nombre"],
+    producto["descripcion"],
+    producto["cantidad"],
+    producto["precio"],
+    producto["categoria"]
+    ))
+    conexion.commit()
+    return cursor.rowcount
+
+# actualizar_producto por ID
+def actualizar_producto(id, producto):
+    cursor.execute('''
+        UPDATE productos
+        SET nombre = ?, descripcion = ?, cantidad = ?, precio = ?, categoria = ?
+        WHERE id = ?
+''', (
+    producto["nombre"],
+    producto["descripcion"],
+    producto["cantidad"],
+    producto["precio"],
+    producto["categoria"],
+    id
+    ))
+    conexion.commit()
+    return cursor.rowcount
+
+# actualizar_ precio por ID
 '''
 Funcion que actualiza precio de un campo precio de la tabla productos filtrando por campo ID
 '''
@@ -132,8 +171,8 @@ if __name__ == "__main__":
     # PRUEBAS
     # =====================
 
-    print("Conexión establecida exitosamente")
-    print("Objeto cursor creado exitosamente")
+    # print("Conexión establecida exitosamente")
+    # print("Objeto cursor creado exitosamente")
 
     # print("Tabla 'productos' creada exitosamente")
 
@@ -162,13 +201,13 @@ if __name__ == "__main__":
     print(select_all())
 
     # Buscar producto por ID
-    print(buscar_producto_por_id(1))
+    # print(buscar_producto_por_id(1))
 
-    # Buscar precio por ID
-    print(select_price_by_id(1))
+    # # Buscar precio por ID
+    # print(select_price_by_id(1))
 
-    # Buscar precio por LIKE nombre
-    print(select_price_by_like_nombre("IA"))
+    # # Buscar precio por LIKE nombre
+    # print(select_price_by_like_nombre("IA"))
 
     # actualizar_precio_by_id(3, 50000)
     # print(buscar_producto_por_id(3))
@@ -177,8 +216,32 @@ if __name__ == "__main__":
     # print(buscar_producto_por_id(3))
 
     # Buscar productos por cantidad limite
-    print(reporte_productos_bajo_stock(4))
+    # print(reporte_productos_bajo_stock(4))
 
+    # Prueba de registrar_producto
+    # producto_prueba = {
+    #     "nombre" : "Deep Learning",	
+    #     "descripcion" : "Redes neuronales profundas", 
+    #     "cantidad" : 2, 
+    #     "precio" : 45000,	
+    #     "categoria" : "IA"
+    # }
+
+    # registrar_producto(producto_prueba)
+    # print(select_all())
+
+    # Prueba de actualizar_producto
+    # producto_prueba = {
+    #     "nombre" : "Deep Learning",	
+    #     "descripcion" : "Redes neuronales profundas", 
+    #     "cantidad" : 8, 
+    #     "precio" : 80000,	
+    #     "categoria" : "IA"
+    # }
+
+    # actualizar_producto(6, producto_prueba)
+    # print(select_all())
+    
     # =====================
     # COMMIT & CLOSE
     # =====================
