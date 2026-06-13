@@ -74,11 +74,12 @@ main.py
 
 inventario_service.py
 │
+├─ mostrar_productos()
 ├─ registrar_producto()
 ├─ buscar_producto()
 ├─ actualizar_producto()
 ├─ eliminar_producto()
-├─ reporte_stock()
+├─ reporte_productos_bajo_stock()
 └─ orquestación de reglas de negocio
 
 inventario_db.py
@@ -108,13 +109,18 @@ inventario.db
 - Probar un `UPDATE`.
 - Probar un `DELETE`.
 - Reporte de productos cuya cantidad sea <= a un límite indicado por el usuario.
-- Integración main.py
+- Capa de servicios.
+- Integración main.py. Prueba de flujo global.
 - Refactorizar conexión global por funciones tipo conectar() y cerrar().
-- Desarrollar `menu`
+- Desarrollar el menú principal en `main.py`.
+- Integrar las operaciones CRUD con la interfaz de usuario.
+- Implementar validaciones básicas de entrada.
+- Incorporar manejo de excepciones mediante `try-except-finally`.
+- Evaluar el uso de transacciones explícitas (`BEGIN TRANSACTION`, `COMMIT`, `ROLLBACK`) para garantizar la consistencia de los datos.
+- Implementar eliminación de productos con confirmación previa.
+- Incorporar Colorama para mejorar la experiencia visual de la aplicación.
 
-Justificación técnica: el menú suele consumir menos tiempo que verificación de que las operaciones sobre la base funcionen correctamente.
-
-- Probar cada operación de manera aislada
+- Probar cada operación de capa de datos de manera aislada:
 ```
 crear tabla
 ↓
@@ -130,7 +136,7 @@ buscar
 ↓
 reporte
 ↓
-integrar al menú
+integrar al menú mediante capa de servicios
 ```
 
 #### Checks
@@ -145,12 +151,95 @@ integrar al menú
 - Actualizar información de productos existentes ✓  (UPDATE SET WHERE)
 - DELETE ✓
 - Reporte de productos cantidad igual o inferior a un límite especificado ✓
+- registrar_producto() ✓
+- actualizar_producto() ✓
+- Capa de datos ✓
+- Capa de servicios ✓
 
 ## Modulos
 
+#### Diseño de capas consistente
+```
+main.py               → presentación
+inventario_service.py → lógica de negocio
+inventario_db.py      → acceso a datos
+inventario.db         → base de datos física
+```
+```
+Ejemplo:
+
+main.py
+    ↓
+registrar_producto(producto)
+    ↓
+inventario_service.py
+    ↓
+registrar_producto(producto)
+    ↓
+inventario_db.py
+    ↓
+cursor.execute('''INSERT INTO...''')
+    ↓
+inventario.db
+```
 ### main.py
 
+Punto de entrada de la aplicación. Interfaz de usuario. Gestiona el menú, la interacción con el usuario y las llamadas a las funciones del sistema.
+
+#### Responsabilidades
+- Mostrar el menú principal.
+- Capturar la entrada del usuario.
+- Realizar validaciones básicas.
+- Invocar las funciones de negocio.
+- Mostrar los resultados y mensajes al usuario.
+
+#### Mejoras sugeridas
+
+- Validación de datos al registrar un producto.
+- El nombre no puede estar vacío.
+- El precio debe ser un número mayor que cero.
+- Eliminación de productos con confirmación previa.
+- Integración de Colorama para mejorar la experiencia visual.
+  - Mensajes de error y advertencia en rojo.
+  - Confirmaciones en verde.
+  - Información general en azul.
+- Agregas un dato a cada producto que contenga la fecha y hora de la insercion, usando la librería datetime.
 ### inventario_service.py
+
+- Capa de servicios
+- Aporta seguridad
+- Orquestación de las operaciones de inventario_db.py
+- Funciones pasarela llaman a funciones de capa de datos
+```
+mostrar_productos()
+↓
+select_all()
+```
+```
+registrar_producto(producto)
+↓
+registrar_producto(producto)
+```
+```
+buscar_producto_por_id(id)
+↓
+buscar_producto_por_id(id)
+```
+```
+actualizar_producto(id, producto)
+↓
+actualizar_producto(id, producto)
+```
+```
+eliminar_producto(id)
+↓
+eliminar_producto_by_id(id)
+```
+```
+reporte_productos_bajo_stock(cantidad)
+↓
+reporte_productos_bajo_stock(cantidad)
+```
 
 ### inventario_db.py
 ```
@@ -168,6 +257,8 @@ integrar al menú
    select_price_by_like_nombre()
    actualizar_precio_by_id()
    eliminar_producto_by_id()
+   registrar_producto()
+actualizar_producto()
    reporte_productos_bajo_stock()
 
 5. pruebas temporales
