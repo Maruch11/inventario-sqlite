@@ -1,13 +1,28 @@
 # Proyecto
 
-Desarrollar un programa en **Python** que cumpla con las siguientes características:
+Programa en **Python** desarrollado con fines educacionales que permite gestionar un inventario de productos mediante interfaz de consola. La aplicación implementa operaciones CRUD (alta, consulta, actualización y eliminación), búsqueda de productos por ID y generación de reportes de stock bajo. Integra SQLite3 para la persistencia de datos y se organiza mediante una arquitectura en capas compuesta por presentación (UI), servicios y acceso a datos.
+
+## Estado del proyecto
+
+Proyecto finalizado.
+
+Funcionalidades implementadas:
+
+- Operaciones CRUD sobre productos.
+- Búsqueda de productos por ID.
+- Reporte de productos con bajo stock.
+- Persistencia de datos mediante SQLite3.
+- Interfaz de consola con Colorama.
+- Arquitectura en capas (presentación, servicios y acceso a datos).
 
 ## Requerimientos
 
 ### Base de datos
  Crear una base de datos llamada `inventario.db` para almacenar los datos de los productos. 
 
-#### La tabla `productos` debe contener las siguientes columnas:
+#### Tabla `productos` 
+
+Debe contener las siguientes columnas:
 
 - `id`: Identificador único del producto (clave primaria, autoincremental).
 - `nombre`: Nombre del producto (texto, no nulo).
@@ -33,7 +48,6 @@ Implementar una interfaz de usuario básica, para interactuar con la base de dat
 
 Opcional: Utilizar el módulo `colorama` para mejorar la legibilidad y experiencia de usuario en la terminal, añadiendo colores a los mensajes y opciones
 
-
 ## Requisitos técnicos
 
 El código debe estar bien estructurado, utilizando funciones para modularizar la lógica de la aplicación.
@@ -42,29 +56,13 @@ Los comentarios deben estar presentes en el código, explicando las partes clave
 
 ## Arquitectura
 ```
-Solicitud       Respuesta
-
-Usuario         inventario.db
-  │                 │
-  ▼                 ▼
-main.py           inventario_db.py
-  │                 │
-  ▼                 ▼
-inventario_service.py inventario_service.py
-  │                 │
-  ▼                 ▼
-inventario_db.py main.py
-  │                 │
-  ▼                 ▼
-inventario.db    Usuario
+main.py → inventario_service.py → inventario_db.py → inventario.db
 ```
+
 ## Diseño conceptual
 
 ```
 main.py
-│
-├─ conexion = conectar()
-├─ crear_tabla(conexion)
 │
 ├─ menú
 │   ├─ captura de opción
@@ -74,140 +72,45 @@ main.py
 
 inventario_service.py
 │
-├─ mostrar_productos()
 ├─ registrar_producto()
-├─ buscar_producto()
+├─ mostrar_productos()
+├─ buscar_producto_por_id()
 ├─ actualizar_producto()
 ├─ eliminar_producto()
 ├─ reporte_productos_bajo_stock()
-└─ orquestación de reglas de negocio
+│
+└─ funciones pasarela hacia la capa de datos
 
 inventario_db.py
-|
+│
 ├─ conexion
 ├─ cursor
 ├─ CREATE TABLE productos
+│
 ├─ select_all()
 ├─ buscar_producto_por_id()
-├─ select_price_by_id()
-├─ select_price_by_like_nombre()
-├─ actualizar_precio_by_id()
+├─ select_price_by_id()              # spike
+├─ select_price_by_like_nombre()     # spike
+│
+├─ registrar_producto()
+├─ actualizar_producto()
+├─ actualizar_precio_by_id()         # spike
 ├─ eliminar_producto_by_id()
+│
 └─ reporte_productos_bajo_stock()
 
 inventario.db
 │
 └─ persistencia de datos
 ```
-## Backlog técnico
-
-- Crear la base `inventario.db`.
-- Crear la tabla `productos`.
-- Verificar conexión.
-- Probar un `INSERT`.
-- Probar un `SELECT`.
-- Probar un `UPDATE`.
-- Probar un `DELETE`.
-- Reporte de productos cuya cantidad sea <= a un límite indicado por el usuario.
-- Capa de servicios.
-- Integración main.py. Prueba de flujo global.
-- Refactorizar conexión global por funciones tipo conectar() y cerrar().
-- Desarrollar el menú principal en `main.py`.
-- Integrar las operaciones CRUD con la interfaz de usuario.
-- Implementar validaciones básicas de entrada.
-- Incorporar manejo de excepciones mediante `try-except-finally`.
-- Evaluar el uso de transacciones explícitas (`BEGIN TRANSACTION`, `COMMIT`, `ROLLBACK`) para garantizar la consistencia de los datos.
-- Implementar eliminación de productos con confirmación previa.
-- Incorporar Colorama para mejorar la experiencia visual de la aplicación.
-
-- Probar cada operación de capa de datos de manera aislada:
-```
-crear tabla
-↓
-insertar
-↓
-consultar
-↓
-actualizar
-↓
-eliminar
-↓
-buscar
-↓
-reporte
-↓
-integrar al menú mediante capa de servicios
-```
-
-#### Checks
-- CREATE TABLE ✓ 
-- INSERT ✓
-- SELECT ✓
-- COMMIT ✓
-- CLOSE ✓
-- buscar precio por nombre con LIKE ✓ (spike técnico)
-- buscar precio por id ✓ (spike técnico)
-- Buscar producto por ID ✓ (SELECT FROM WHERE)
-- Actualizar información de productos existentes ✓  (UPDATE SET WHERE)
-- DELETE ✓
-- Reporte de productos cantidad igual o inferior a un límite especificado ✓
-- registrar_producto() ✓
-- actualizar_producto() ✓
-- Capa de datos ✓
-- Capa de servicios ✓
-- Capa de aplicacion:
-  - El esqueleto del Menú principal validado: ✔
-    - Entrada no numérica ✔
-    - Opción fuera de rango ✔
-    - Opciones válidas ✔
-    - Salida ✔
-    - Captura de opción ✔
-    - Validación de opción ✔
-- Opción 1 (alta) ✔
-    - Validación de nombre ✔
-    - Validación de cantidad ✔
-    - Validación de precio ✔
-    - Persistencia en SQLite ✔
-- Opción 2 (listado) ✔
-- Flujo completo main → service → db → sqlite → db → service → main ✔
-- Opcion 3 (busqueda por id) ✔
-  - Validación de id ✔ 
-  - id existente
-  - id inexistente
-- Opcion 4 (actualizacion por id)
-  - ID existente → actualiza correctamente ✔
-  - ID inexistente → informa y vuelve al menú ✔
-  - Validaciones: ✔
-     - 0        ✔
-     - negativos✔
-     - decimales✔
-     - texto✔
-     - Enter✔
-- Opcion 5 (eliminacion por id)
-  - ID existente + s✔
-  - ID existente + n✔
-  - ID inexistente✔
-  - ID = 0 ✔
-  - ID texto✔
-  - ID decimal✔
-  - ID negativo✔
-  - Confirmación inválida (x)✔
-- Opcion 6 (reporte de stock bajo)
-  - Entero válido sin resultados ✔
-  - Entero válido con resultados ✔
-  - Texto ✔
-  - Decimal ✔
-  - Negativo ✔
-  - Retorno al menú principal ✔
-
 ## Modulos
 
 #### Diseño de capas consistente
 ```
 main.py               → presentación
-inventario_service.py → lógica de negocio
+inventario_service.py → servicios / pasarela
 inventario_db.py      → acceso a datos
-inventario.db         → base de datos física
+inventario.db         → persistencia
 ```
 ```
 Ejemplo:
@@ -308,23 +211,31 @@ main()
     └─ elif opcion == 7
          └─ salir
 ```
-##### Mejoras sugeridas
+##### Mejoras implementadas
 
 - Validación de datos al registrar un producto.
 - El nombre no puede estar vacío.
-- El precio debe ser un número mayor que cero.
 - Eliminación de productos con confirmación previa.
 - Integración de Colorama para mejorar la experiencia visual.
   - Mensajes de error y advertencia en rojo.
   - Confirmaciones en verde.
   - Información general en azul.
-- Agregas un dato a cada producto que contenga la fecha y hora de la insercion, usando la librería datetime.
+
 ### inventario_service.py
 
 - Capa de servicios
-- Aporta seguridad
 - Orquestación de las operaciones de inventario_db.py
 - Funciones pasarela llaman a funciones de capa de datos
+
+ En la versión actual del proyecto, la capa de servicios funciona como una pasarela entre la capa de presentación y la capa de acceso a datos. La arquitectura permite escalar la aplicación mediante la incorporación de reglas de negocio, validaciones centralizadas, auditoría, control de permisos o integración con otros sistemas sin afectar las demás capas. Estas capacidades no se encuentran implementadas en esta etapa.
+
+```
+Pasarela:
+
+inventario_service.py
+↓
+inventario_db.py
+```
 ```
 mostrar_productos()
 ↓
@@ -365,23 +276,14 @@ reporte_productos_bajo_stock(cantidad)
 
 3. CREATE TABLE
 
-4. funciones CRUD
+4. Funciones de acceso a datos
    select_all()
    buscar_producto_por_id()
    select_price_by_id()
    select_price_by_like_nombre()
+   registrar_producto()
+   actualizar_producto()
    actualizar_precio_by_id()
    eliminar_producto_by_id()
-   registrar_producto()
-actualizar_producto()
    reporte_productos_bajo_stock()
-
-5. pruebas temporales
-  - Inserciones iniciales: comentadas, para no duplicar datos.
-  - SELECT: sin comentar.
-  - UPDATE y DELETE: comentadas, porque modifican datos y no conviene repetirlas.
-  - Bloque envuelto en if __name__ == "__main__": para que las pruebas no corran al importar el módulo.
-   
-  6. commit (dentro de pruebas temporales)
-  7. close (dentro de pruebas temporales)
    ```
