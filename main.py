@@ -1,4 +1,9 @@
-# Módulo de entrada de la aplicacion.
+"""
+Modulo principal de la aplicacion.
+
+Gestiona la interaccion con el usuario mediante un menu
+de opciones para administrar productos del inventario.
+"""
 
 # =====================
 # IMPORT
@@ -19,10 +24,11 @@ init(autoreset=True)
 # =====================
 # funciones 
 # =====================
-'''
-Funcion que muestra el menu
-'''
+
 def mostrar_menu():
+    """
+    Muestra el menú principal de opciones del sistema.
+    """
     print(Fore.MAGENTA + "=" * 60)
     print(Fore.CYAN + "\t Sistema Inventario de Productos")
     print(Fore.MAGENTA + "=" * 60)
@@ -35,10 +41,10 @@ def mostrar_menu():
     print(Fore.CYAN + "7. Salir")
     print(Fore.MAGENTA + "=" * 60)
 
-'''
-Funcion que captura opciones
-'''
 def capturar_opcion():
+    """
+    Captura y devuelve como entero la opción ingresada por el usuario.
+    """
     entrada = input("Seleccione una opción (1-7): ")
     opcion = int(entrada)
     return opcion
