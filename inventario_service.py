@@ -36,8 +36,11 @@ def reporte_productos_bajo_stock(cantidad):
 if __name__ == "__main__":
     # print(mostrar_productos())
 
-   print(buscar_producto_por_id(3))
-    
+   # print(buscar_producto_por_id(3))
+
+    print(reporte_productos_bajo_stock(1))
+    print(reporte_productos_bajo_stock(4))
+    print(reporte_productos_bajo_stock(8))
 
 
 

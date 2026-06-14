@@ -15,7 +15,7 @@ from inventario_service import (
     reporte_productos_bajo_stock
 )
 
-init()
+init(autoreset=True)
 
 # =====================
 # funciones 
@@ -159,9 +159,51 @@ if __name__ == "__main__":
                 actualizar_producto(id, producto)
                 print(f"Producto ID {id} actualizado correctamente.")    
             elif opcion == 5:
-                pass
+                while True:
+                    try:
+                        id = int(input("Ingrese el ID del producto a eliminar: "))
+                        if id > 0:
+                            break
+                        else:
+                            print("Ha ingresado un número inválido para un ID. Ingrese un número entero mayor a cero")
+                    except ValueError:
+                        print("Ingreso un ID no válido. Ingrese un ID numérico válido.")
+                producto_eliminar = buscar_producto_por_id(id)
+                if producto_eliminar is not None:
+                    print(producto_eliminar)
+                    while True:
+                            confirmacion = input(f"El producto ID {id} será eliminado, confirma? s/n: ")
+                            if confirmacion == "s":
+                                eliminar_producto(id)
+                                print(f"Producto ID {id} eliminado.")
+                                break
+                            elif confirmacion == "n":
+                                print(f"Eliminacion de producto ID {id} cancelada")
+                                break
+                            else:
+                                print("Ha ingresado una opción no válida. Ingrese 's' si desea eliminar el producto o 'n' si desea cancelar la eliminación de producto.")
+                else: 
+                    print(f"No existe producto con ID {id}")
             elif opcion == 6:
-                pass
+                while True:
+                    try:
+                        limite = int(input("Ingrese la cantidad deseada para considerar stock bajo: "))
+                        if limite >= 0:
+                            stock_bajo = reporte_productos_bajo_stock(limite)
+                            if stock_bajo != []:
+                                print("=======")
+                                print("ALERTA")
+                                print("=======")
+                                print("Productos con stock bajo: ")
+                                print(stock_bajo)
+                                break
+                            elif stock_bajo == []:
+                                print(f"No existen productos con cantidad igual o menor a {limite}")
+                                break
+                        else:
+                                print("Ingrese un número válido para cantidad, entero positivo o cero.")
+                    except:
+                        print("Ha ingresado un valor no válido para cantidad límite")
             elif opcion == 7:
                 print("Gracias por utilizar el sistema.")
                 break

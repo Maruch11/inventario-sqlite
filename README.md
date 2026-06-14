@@ -183,6 +183,22 @@ integrar al menú mediante capa de servicios
      - decimales✔
      - texto✔
      - Enter✔
+- Opcion 5 (eliminacion por id)
+  - ID existente + s✔
+  - ID existente + n✔
+  - ID inexistente✔
+  - ID = 0 ✔
+  - ID texto✔
+  - ID decimal✔
+  - ID negativo✔
+  - Confirmación inválida (x)✔
+- Opcion 6 (reporte de stock bajo)
+  - Entero válido sin resultados ✔
+  - Entero válido con resultados ✔
+  - Texto ✔
+  - Decimal ✔
+  - Negativo ✔
+  - Retorno al menú principal ✔
 
 ## Modulos
 
@@ -233,19 +249,20 @@ main()
     ├─ opcion = capturar_opcion()
     │
     └─ if opcion == 1
-         │
-         ├─ pedir nombre
-         ├─ pedir descripción
-         │
-         ├─ while True       ← validar cantidad
-         │    └─ try/except
-         │
-         ├─ while True       ← validar precio
-         │    └─ try/except
-         │
-         ├─ pedir categoria
-         ├─ construir diccionario
-         └─ registrar_producto()
+    │    │
+    │    ├─ pedir nombre
+    │    ├─ pedir descripción
+    │    │
+    │    ├─ while True       ← validar cantidad
+    │    │    └─ try/except
+    │    │
+    │    ├─ while True       ← validar precio
+    │    │    └─ try/except
+    │    │
+    │    ├─ pedir categoria
+    │    ├─ construir diccionario
+    │    └─ registrar_producto()
+    │
     ├─ elif opcion == 2
     │    ├─ mostrar_productos()
     │    └─ mostrar resultado
@@ -258,24 +275,35 @@ main()
     │    └─ mostrar resultado
     │
     ├─ elif opcion == 4
-        ├─ capturar id
-        ├─ while True       ← validar id
-    │   │    └─ try/except
-        ├─ capturar nuevos datos
-        ├─ validar nuevos datos
-        ├─ construir producto
-        ├─ actualizar_producto(id, producto)
-        └─ mostrar resultadoo
+    │    ├─ capturar id
+    │    ├─ while True       ← validar id
+    │    │    └─ try/except
+    │    ├─ capturar nuevos datos
+    │    ├─ validar nuevos datos
+    │    ├─ construir producto
+    │    ├─ actualizar_producto(id, producto)
+    │    └─ mostrar resultadoo
     │
     ├─ elif opcion == 5
     │    ├─ capturar id
-    │    ├─ eliminar_producto()
+    │    ├─ while True       ← validar id
+    │    │    └─ try/except
+    │    ├─ mostrar producto
+    │    ├─ solicitar confirmacion s/n
+    │    ├─ if/else
+    │    │    ├─ eliminar_producto()
+    │    │    ├─ cancelar
     │    └─ mostrar resultado
     │
     ├─ elif opcion == 6
-    │    ├─ capturar cantidad
-    │    ├─ reporte_productos_bajo_stock()
-    │    └─ mostrar resultado
+    │    ├─ capturar límite de stock
+    │    ├─ while True       ← validar límite
+    │    │    └─ try/except
+    │    ├─ reporte_productos_bajo_stock(limite)
+    │    ├─ si existen productos
+    │    │    └─ mostrar resultado
+    │    └─ si no existen productos
+    │         └─ mostrar mensaje informativo
     │
     └─ elif opcion == 7
          └─ salir
