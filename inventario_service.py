@@ -1,8 +1,13 @@
 # Capa de servicios de negocio.
 # Orquestación de las operaciones de inventario_db.py.
-
+# =====================
+# IMPORT
+# =====================
 import inventario_db
 
+# =====================
+# funciones pasarela
+# =====================
 def mostrar_productos():
     return inventario_db.select_all()
 
@@ -25,6 +30,14 @@ def eliminar_producto(id):
 def reporte_productos_bajo_stock(cantidad):
     return inventario_db.reporte_productos_bajo_stock(cantidad)
 
+ # =====================
+ #  PRUEBAS
+ # =====================
+if __name__ == "__main__":
+    # print(mostrar_productos())
+
+   print(buscar_producto_por_id(3))
+    
 
 
 

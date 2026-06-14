@@ -155,6 +155,34 @@ integrar al menú mediante capa de servicios
 - actualizar_producto() ✓
 - Capa de datos ✓
 - Capa de servicios ✓
+- Capa de aplicacion:
+  - El esqueleto del Menú principal validado: ✔
+    - Entrada no numérica ✔
+    - Opción fuera de rango ✔
+    - Opciones válidas ✔
+    - Salida ✔
+    - Captura de opción ✔
+    - Validación de opción ✔
+- Opción 1 (alta) ✔
+    - Validación de nombre ✔
+    - Validación de cantidad ✔
+    - Validación de precio ✔
+    - Persistencia en SQLite ✔
+- Opción 2 (listado) ✔
+- Flujo completo main → service → db → sqlite → db → service → main ✔
+- Opcion 3 (busqueda por id) ✔
+  - Validación de id ✔ 
+  - id existente
+  - id inexistente
+- Opcion 4 (actualizacion por id)
+  - ID existente → actualiza correctamente ✔
+  - ID inexistente → informa y vuelve al menú ✔
+  - Validaciones: ✔
+     - 0        ✔
+     - negativos✔
+     - decimales✔
+     - texto✔
+     - Enter✔
 
 ## Modulos
 
@@ -186,14 +214,73 @@ inventario.db
 
 Punto de entrada de la aplicación. Interfaz de usuario. Gestiona el menú, la interacción con el usuario y las llamadas a las funciones del sistema.
 
-#### Responsabilidades
+##### Responsabilidades
 - Mostrar el menú principal.
-- Capturar la entrada del usuario.
-- Realizar validaciones básicas.
-- Invocar las funciones de negocio.
-- Mostrar los resultados y mensajes al usuario.
+- Capturar la opción seleccionada.
+- Validar la entrada del usuario.
+- Mostrar alertas.
+- Capturar los datos necesarios para cada operación.
+- Invocar las funciones de inventario_service.py.
+- Mostrar resultados y mensajes al usuario.
 
-#### Mejoras sugeridas
+#### Flujo principal
+```
+main()
+│
+└─ while True ← menú principal
+    │
+    ├─ mostrar_menu()
+    ├─ opcion = capturar_opcion()
+    │
+    └─ if opcion == 1
+         │
+         ├─ pedir nombre
+         ├─ pedir descripción
+         │
+         ├─ while True       ← validar cantidad
+         │    └─ try/except
+         │
+         ├─ while True       ← validar precio
+         │    └─ try/except
+         │
+         ├─ pedir categoria
+         ├─ construir diccionario
+         └─ registrar_producto()
+    ├─ elif opcion == 2
+    │    ├─ mostrar_productos()
+    │    └─ mostrar resultado
+    │
+    ├─ elif opcion == 3
+    │    ├─ capturar id
+    │    ├─ while True       ← validar id
+    │    │    └─ try/except
+    │    ├─ buscar_producto_por_id()
+    │    └─ mostrar resultado
+    │
+    ├─ elif opcion == 4
+        ├─ capturar id
+        ├─ while True       ← validar id
+    │   │    └─ try/except
+        ├─ capturar nuevos datos
+        ├─ validar nuevos datos
+        ├─ construir producto
+        ├─ actualizar_producto(id, producto)
+        └─ mostrar resultadoo
+    │
+    ├─ elif opcion == 5
+    │    ├─ capturar id
+    │    ├─ eliminar_producto()
+    │    └─ mostrar resultado
+    │
+    ├─ elif opcion == 6
+    │    ├─ capturar cantidad
+    │    ├─ reporte_productos_bajo_stock()
+    │    └─ mostrar resultado
+    │
+    └─ elif opcion == 7
+         └─ salir
+```
+##### Mejoras sugeridas
 
 - Validación de datos al registrar un producto.
 - El nombre no puede estar vacío.

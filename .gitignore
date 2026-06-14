@@ -11,3 +11,6 @@ inventario.db
 inventario.db-journal
 inventario.db-wal
 inventario.db-shm
+
+# Documento de apoyo
+apoyo.md
