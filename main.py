@@ -49,6 +49,18 @@ def capturar_opcion():
     opcion = int(entrada)
     return opcion
 
+def mostrar_producto(producto):
+    """
+    Desempaqueta tupla producto y muestra f"producto" para mejorar UX.
+    """
+    print(Fore.RESET, end="")
+    print(f"ID: {producto[0]}")
+    print(f"Nombre: {producto[1]}")
+    print(f"Descripcion: {producto[2]}")
+    print(f"Cantidad: {producto[3]}")
+    print(f"Precio: {producto[4]}")
+    print(f"Categoria: {producto[5]}")
+
 # =====================
 # Programa
 # =====================      
@@ -112,7 +124,7 @@ if __name__ == "__main__":
                         print(Fore.RED + "Ingreso un ID no válido. Ingrese un ID numérico válido.")
                 producto_id = buscar_producto_por_id(id)
                 if producto_id is not None:
-                    print(producto_id)
+                    mostrar_producto(producto_id)
                 else: 
                     print(Fore.BLUE + f"No existe producto con ID {id}")
             elif opcion == 4:
@@ -178,7 +190,7 @@ if __name__ == "__main__":
                         print(Fore.RED + "Ingreso un ID no válido. Ingrese un ID numérico válido.")
                 producto_eliminar = buscar_producto_por_id(id)
                 if producto_eliminar is not None:
-                    print(producto_eliminar)
+                    mostrar_producto(producto_eliminar)
                     while True:
                             confirmacion = input(Fore.BLUE + f"El producto ID {id} será eliminado, confirma? s/n: ")
                             if confirmacion == "s":
@@ -203,7 +215,8 @@ if __name__ == "__main__":
                                 print(Fore.BLUE + "ALERTA")
                                 print(Fore.BLUE + "=======")
                                 print(Fore.BLUE + "Productos con stock bajo: ")
-                                print(stock_bajo)
+                                for producto in stock_bajo:
+                                    mostrar_producto(producto)
                                 break
                             elif stock_bajo == []:
                                 print(Fore.BLUE + f"No existen productos con cantidad igual o menor a {limite}")
