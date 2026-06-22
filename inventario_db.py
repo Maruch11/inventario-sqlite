@@ -55,7 +55,7 @@ def select_all():
 
 def buscar_producto_por_id(id):
     """
-    Devuelve una tupla con los datos del producto cuyo ID coincide
+    Devuelve una tupla (o None=) con los datos del producto cuyo ID coincide
     con el valor recibido como parámetro.
     """
     id_buscado = id
@@ -65,8 +65,8 @@ def buscar_producto_por_id(id):
         WHERE id = ?
 ''', (id_buscado,)
 )
-    filas = cursor.fetchone()
-    return filas
+    producto = cursor.fetchone()
+    return producto
 
 def select_price_by_id(id):
     """
@@ -82,8 +82,8 @@ def select_price_by_id(id):
         WHERE id = ?
 ''', (id_buscado,)
 )
-    filas = cursor.fetchone()
-    return filas
+    fila = cursor.fetchone()
+    return fila
 
 def select_price_by_like_nombre(nombre):
     """
@@ -99,8 +99,8 @@ def select_price_by_like_nombre(nombre):
         WHERE nombre like ?
 ''', (nombre_buscado,)
 )
-    filas = cursor.fetchone()
-    return filas
+    fila = cursor.fetchone()
+    return fila
 
 # --------------
 # ALTAS (CREATE)
