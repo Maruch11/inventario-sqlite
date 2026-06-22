@@ -9,22 +9,24 @@ y las operaciones SQL sobre la tabla productos.
 
 import sqlite3
 
-# =====================
-# CONEXION
-# =====================
+# =======================
+# CONEXION & CREATE TABLE
+# =======================
 
-# Establecer conexión a la base de datos
-conexion = sqlite3.connect("inventario.db") # variable global
+# Inicializar variables globales en None para no arrastra efectos secundarios al importar el módulo
+conexion = None # Crear variable global - scope del modulo
+cursor = None # Crear variable global - scope del modulo
 
-# Crear un objeto cursor para ejecutar sentencias SQL
-cursor = conexion.cursor() # variable global
-
-# =====================
-# CREATE TABLE
-# =====================
-
-# Crear tabla productos
-cursor.execute('''
+def init_db():
+    """
+    Inicializa la conexión a la base de datos y crea la tabla productos si no existe.
+     Modifica las variables globales conexion y cursor para que estén disponibles
+     en todo el módulo y puedan ser utilizadas por las funciones de acceso a datos.
+     """
+    global conexion, cursor # Modificar las variables del modulo, no crear variables locales
+    conexion = sqlite3.connect("inventario.db") # Establecer conexión a la base de datos
+    cursor = conexion.cursor() # Crear un objeto cursor para ejecutar sentencias SQL
+    cursor.execute('''
     CREATE TABLE IF NOT EXISTS productos (
         id INTEGER PRIMARY KEY AUTOINCREMENT,
         nombre TEXT NOT NULL,
@@ -204,3 +206,14 @@ def reporte_productos_bajo_stock(cantidad):
 ''', (cantidad_limite,))
     filas = cursor.fetchall()
     return filas
+
+# ===============
+# CERRAR CONEXION
+# ===============
+def cerrar_conexion():
+    """Cierra la conexión a la base de datos.
+     Modifica la variable global conexion para que no quede una conexión abierta."""
+    global conexion, cursor
+    conexion.close()
+    conexion = None
+    cursor = None

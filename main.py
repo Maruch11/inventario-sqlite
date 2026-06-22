@@ -8,15 +8,19 @@ de opciones para administrar productos del inventario.
 # =====================
 # IMPORT
 # =====================
+import sqlite3
+
 from colorama import Fore, init
 
 from inventario_service import (
+    inicializar,
     mostrar_productos,
     registrar_producto,
     buscar_producto_por_id,
     actualizar_producto,
     eliminar_producto,
-    reporte_productos_bajo_stock
+    reporte_productos_bajo_stock,
+    cerrar
 )
 
 init(autoreset=True)
@@ -65,6 +69,11 @@ def mostrar_producto(producto):
 # Programa
 # =====================      
 if __name__ == "__main__":
+    try:
+        inicializar()
+    except sqlite3.Error:
+        print(Fore.RED + "Error al inicializar la base de datos.")
+        exit(1)
     while True:
         try:
             mostrar_menu()
@@ -223,10 +232,15 @@ if __name__ == "__main__":
                                 break
                         else:
                                 print(Fore.RED + "Ingrese un número válido para cantidad, entero positivo o cero.")
-                    except:
+                    except ValueError:
                         print(Fore.RED + "Ha ingresado un valor no válido para cantidad límite")
             elif opcion == 7:
                 print(Fore.YELLOW + "Gracias por utilizar el sistema.")
-                break
+                try:
+                    cerrar()
+                except sqlite3.error:
+                    print(Fore.RED + "Error al cerrar la base de datos.")
         except ValueError:
             print(Fore.RED + "Error: Entrada no válida. Debe ingresar un número.")
+        except sqlite3.Error:
+            print(Fore.RED + "Error de base de datos. Intente nuevamente.")

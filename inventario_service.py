@@ -12,6 +12,12 @@ import inventario_db
 # funciones pasarela
 # =====================
 
+def inicializar():
+    """
+    Inicializa la base de datos, crea un objeto cursor y crea la tabla productos si no existe.
+     """
+    inventario_db.init_db()
+
 def mostrar_productos():
     """
     Devuelve una lista de tuplas con todos los registros
@@ -57,3 +63,7 @@ def reporte_productos_bajo_stock(cantidad):
 # Funcion que actualiza precio buscando producto por ID, definida para spike tecnico
 # def actualizar_precio(id, precio):
 #     return actualizar_precio_by_id(id, precio)
+
+def cerrar():
+    """Cierra la conexión a la base de datos."""
+    inventario_db.cerrar_conexion()
