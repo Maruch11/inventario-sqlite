@@ -32,6 +32,14 @@ def buscar_producto_por_id(id):
     """
     return inventario_db.buscar_producto_por_id(id)
 
+def buscar_productos_por_nombre(nombre):
+    """
+    Devuelve una lista de tuplas con los productos cuyo
+    nombre coincide con el valor recibido como parámetro.
+    Función conservada como spike técnico.
+    """
+    return inventario_db.select_all_by_like_nombre(nombre)
+
 def registrar_producto(producto):
     """
     Registra un nuevo producto utilizando la capa
@@ -59,10 +67,6 @@ def reporte_productos_bajo_stock(cantidad):
     es menor o igual al límite recibido como parámetro.
     """
     return inventario_db.reporte_productos_bajo_stock(cantidad)
-
-# Funcion que actualiza precio buscando producto por ID, definida para spike tecnico
-# def actualizar_precio(id, precio):
-#     return actualizar_precio_by_id(id, precio)
 
 def cerrar():
     """Cierra la conexión a la base de datos."""

@@ -68,39 +68,21 @@ def buscar_producto_por_id(id):
     producto = cursor.fetchone()
     return producto
 
-def select_price_by_id(id):
+def select_all_by_like_nombre(nombre):
     """
-    Devuelve una tupla que contiene el precio del producto cuyo ID
-    coincide con el valor recibido como parámetro.
-
-    Función conservada como spike técnico.
-    """
-    id_buscado = id
-    cursor.execute('''
-        SELECT precio 
-        FROM productos 
-        WHERE id = ?
-''', (id_buscado,)
-)
-    fila = cursor.fetchone()
-    return fila
-
-def select_price_by_like_nombre(nombre):
-    """
-    Devuelve una tupla que contiene el precio del primer producto cuyo
+    Devuelve una lista de tuplas con los productos cuyo
     nombre coincide con el patrón recibido.
 
     Función conservada como spike técnico.
     """
     nombre_buscado = f"%{nombre}%"
     cursor.execute('''
-        SELECT precio 
-        FROM productos 
+        SELECT * FROM productos 
         WHERE nombre like ?
 ''', (nombre_buscado,)
 )
-    fila = cursor.fetchone()
-    return fila
+    filas = cursor.fetchall()
+    return filas
 
 # --------------
 # ALTAS (CREATE)
@@ -149,25 +131,6 @@ def actualizar_producto(id, producto):
     producto["categoria"],
     id
     ))
-    conexion.commit()
-    return cursor.rowcount
-
-def actualizar_precio_by_id(id, precio):
-    """
-    Actualiza el precio del producto cuyo ID coincide con el valor
-    recibido como parámetro.
-
-    Devuelve la cantidad de filas afectadas.
-
-    Función conservada como spike técnico.
-    """
-    id_buscado = id
-    precio_actualizado = precio
-    cursor.execute('''
-        UPDATE productos
-        SET precio = ?
-        WHERE id = ?
-''', (precio_actualizado, id_buscado))
     conexion.commit()
     return cursor.rowcount
 
