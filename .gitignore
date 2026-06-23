@@ -5,6 +5,7 @@ __pycache__
 .venv/
 venv/
 .env
+.vscode/
 
 # Base de datos local
 inventario.db
@@ -14,3 +15,6 @@ inventario.db-shm
 
 # Documento de apoyo
 apoyo.md
+consigna_proyecto.md
+Revision_cumplimiento.md
+spike.py
