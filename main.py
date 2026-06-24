@@ -236,6 +236,7 @@ if __name__ == "__main__":
                         print(Fore.RED + "Ha ingresado un valor no válido para cantidad límite")
             elif opcion == 7:
                 print(Fore.YELLOW + "Gracias por utilizar el sistema.")
+                break
                 try:
                     cerrar()
                 except sqlite3.error:
