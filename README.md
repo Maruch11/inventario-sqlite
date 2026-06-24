@@ -15,6 +15,7 @@ Funcionalidades implementadas:
 - Interfaz de consola con Colorama.
 - Arquitectura en capas (presentación, servicios y acceso a datos).
 - Búsqueda de productos por nombre (implementada en capas de datos y servicios, pendiente integración en la interfaz, opcional segun la consigna).
+- Impresión de productos con f-string para mejorar UI, excepto en opcion "Mostrar productos" que imprime la lista de tuplas debido a que habría que implementar paginación por ser la impresión del stock completo.
 
 ---
 
